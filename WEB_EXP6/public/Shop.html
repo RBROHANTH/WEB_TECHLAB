@@ -1,0 +1,156 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - RBR Farms</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheet1.css">
+    <script>
+        function validateForm(event) {
+    event.preventDefault();
+    let valid = true;
+
+    // Name validation
+    let name = document.getElementById("name").value.trim();
+    let namePattern = /^[A-Za-z\s]+$/;
+    if (!namePattern.test(name)) {
+        document.getElementById("nameError").innerText = "Name must contain only letters and spaces.";
+        valid = false;
+    } else {
+        document.getElementById("nameError").innerText = "";
+    }
+
+    // Email validation
+    let email = document.getElementById("email").value.trim();
+    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,6}$/;
+    if (!emailPattern.test(email)) {
+        document.getElementById("emailError").innerText = "Enter a valid email address.";
+        valid = false;
+    } else {
+        document.getElementById("emailError").innerText = "";
+    }
+
+    // Phone validation
+    let phone = document.getElementById("phone").value.trim();
+    let phonePattern = /^[0-9]{10}$/;
+    if (!phonePattern.test(phone)) {
+        document.getElementById("phoneError").innerText = "Enter a valid 10-digit phone number.";
+        valid = false;
+    } else {
+        document.getElementById("phoneError").innerText = "";
+    }
+
+    // Quantity validation
+    let quantity = document.getElementById("quantity").value.trim();
+    let quantityValue = parseInt(quantity);
+    if (isNaN(quantityValue) || quantityValue < 1) {
+        document.getElementById("quantityError").innerText = "Enter a valid quantity (minimum 1).";
+        valid = false;
+    } else {
+        document.getElementById("quantityError").innerText = "";
+    }
+
+    // Address validation
+    let address = document.getElementById("address").value.trim();
+    if (address.length < 10) {
+        document.getElementById("addressError").innerText = "Address must be at least 10 characters long.";
+        valid = false;
+    } else {
+        document.getElementById("addressError").innerText = "";
+    }
+
+    if (valid) {
+        alert("Order placed successfully!");
+        event.target.submit(); // Submit the form
+    }
+}
+    </script>
+    <style>
+        .error {
+            color: red;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="text-center py-1" style="background-color: #f9f9f9;">
+        <h1 class="title">RBR Farms</h1>
+    </div>
+    <header class="custom-header">
+        <div>
+            <div class="title">Eat healthy,</div>
+            <div class="title">Live healthy</div>
+        </div>
+    </header>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="cow.html">Cows</a></li>
+                <li class="nav-item"><a class="nav-link" href="goat.html">Goats</a></li>
+                <li class="nav-item"><a class="nav-link" href="poultry.html">Poultry</a></li>
+                <li class="nav-item active"><a class="nav-link" href="Shop.html">Shop</a></li>
+                <li class="nav-item active"><a class="nav-link" href="feedCALCULATOR.html">FeedCalculator</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4" >
+        <h2 class="text-center">Shop at RBR Farms</h2>
+        <div class="card card-custom card-custom-green">
+        <form id="orderForm" onsubmit="validateForm(event)">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" class="form-control">
+                <span id="nameError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control">
+                <span id="emailError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" class="form-control">
+                <span id="phoneError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="product">Select Product</label>
+                <select id="product" class="form-control">
+                    <option value="Milk">Fresh Milk</option>
+                    <option value="GoatMeat">Goat Meat</option>
+                    <option value="Eggs">Organic Eggs</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" class="form-control">
+                <span id="quantityError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Delivery Address</label>
+                <textarea id="address" class="form-control" rows="3"></textarea>
+                <span id="addressError" class="error"></span>
+            </div>
+
+            <button type="submit" class="btn btn-danger">Place Order</button>
+        </form>
+    </div>
+    </div>
+    <footer class="footer-custom">
+        &copy; 2025 RBR Farms. All rights reserved. | Contact us: info@rbrfarms.com
+    </footer>
+</body>
+</html>

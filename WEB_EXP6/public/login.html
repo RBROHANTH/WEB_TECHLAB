@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RBR Farms - Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheet1.css">
+    
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .login-title {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn-login {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+            width: 100%;
+        }
+        .btn-login:hover {
+            background-color: #45a049;
+            border-color: #45a049;
+        }
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="text-center py-1" style="background-color: #f9f9f9;">
+        <h1 class="title">RBR Farms</h1>
+    </div>
+    <header class="custom-header">
+        <div>
+            <div class="title">Eat healthy ,</div>
+            <div class="title">Live healthy</div>
+        </div>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="home.html">Home</a></li>
+                <li class="nav-item active"><a class="nav-link" href="login.html">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="cow.html">Cows</a></li>
+                <li class="nav-item"><a class="nav-link" href="goat.html">Goats</a></li>
+                <li class="nav-item"><a class="nav-link" href="poultry.html">Poultry</a></li>
+                <li class="nav-item"><a class="nav-link" href="Shop.html">Shop</a></li>
+                <li class="nav-item"><a class="nav-link" href="feedCALCULATOR.html">FeedCalculator</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="login-container">
+            <h2 class="login-title">Login to RBR Farms</h2>
+            
+            <div id="error-container"></div>
+            
+            <form id="login-form" method="POST" action="/login">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-login">Login</button>
+                </div>
+            </form>
+            
+            <div class="text-center mt-3">
+                <a href="/register">Don't have an account? Register here</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer-custom">
+        &copy; 2025 RBR Farms. All rights reserved. | Contact us: info@rbrfarms.com
+    </footer>
+    
+    <!-- Bootstrap JS and other scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // Check for error parameter
+        window.onload = function() {
+            const error = getUrlParameter('error');
+            
+            if (error) {
+                const errorContainer = document.getElementById('error-container');
+                errorContainer.innerHTML = `<div class="message error">${error}</div>`;
+            }
+        };
+    </script>
+</body>
+</html>

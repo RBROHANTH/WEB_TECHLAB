@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch the Goat Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #282c34;
+            color: white;
+        }
+        #game-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 20px auto;
+            background-color: #444;
+            border: 2px solid white;
+            overflow: hidden;
+        }
+        #goat {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        #score {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+        #start-btn {
+            padding: 10px 20px;
+            font-size: 18px;
+            background: limegreen;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Catch the Goat Game</h1>
+    <button id="start-btn">Start Game</button>
+    <div id="score">Score: 0</div>
+    <div id="game-container">
+        <img id="goat" src="logo2.png" alt="Goat">
+    </div>
+
+    <script>
+        let score = 0;
+        let timeLeft = 10;
+        let gameInterval, countdownInterval;
+
+        const goat = document.getElementById("goat");
+        const scoreDisplay = document.getElementById("score");
+        const startBtn = document.getElementById("start-btn");
+        const gameContainer = document.getElementById("game-container");
+
+        function moveGoat() {
+            let maxX = gameContainer.clientWidth - goat.clientWidth;
+            let maxY = gameContainer.clientHeight - goat.clientHeight;
+
+            let randomX = Math.floor(Math.random() * maxX);
+            let randomY = Math.floor(Math.random() * maxY);
+
+            goat.style.left = `${randomX}px`;
+            goat.style.top = `${randomY}px`;
+
+            // Small animation when clicked
+            goat.style.transform = "scale(1.2)";
+            setTimeout(() => goat.style.transform = "scale(1)", 100);
+        }
+
+        goat.addEventListener("click", () => {
+            if (timeLeft > 0) {
+                score++;
+                scoreDisplay.innerText = `Score: ${score}`;
+                moveGoat();
+            }
+        });
+
+        function startGame() {
+            score = 0;
+            timeLeft = 10;
+            scoreDisplay.innerText = `Score: ${score}`;
+            startBtn.disabled = true;
+            moveGoat();
+
+            gameInterval = setInterval(moveGoat, 1000);
+
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(gameInterval);
+                    clearInterval(countdownInterval);
+                    alert(`Game Over! Your score: ${score}`);
+                    startBtn.disabled = false;
+                }
+            }, 1000);
+        }
+
+        startBtn.addEventListener("click", startGame);
+    </script>
+
+</body>
+</html>
