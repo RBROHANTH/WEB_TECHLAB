@@ -30,15 +30,21 @@
                 <li class="nav-item"><a class="nav-link" href="poultry.html">Poultry</a></li>
                 <li class="nav-item"><a class="nav-link" href="Shop.html">Shop</a></li>
                 <li class="nav-item"><a class="nav-link" href="feedCALCULATOR.html">FeedCalculator</a></li>
-                <li class="nav-item active"><a class="nav-link" href="personal-info.html">Personal Info</a></li>
+                <li class="nav-item"><a class="nav-link" href="personal-info.html">Personal Info</a></li>
             </ul>
         </div>
     </nav>
+
+    <!-- Notification alert -->
+    <div class="container mt-2">
+        <div class="alert alert-danger" role="alert" id="notificationAlert" style="display: none;"></div>
+    </div>
+
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-4">
                 <div class="card card-custom card-custom-green">
-                    <div class="card-header bg-light">
+                    <div class="card-header bg-danger">
                         <h3 id="formTitle">Add New Person</h3>
                     </div>
                     <div class="card-body">
@@ -67,6 +73,8 @@
                                     <option value="Supplier">Supplier</option>
                                     <option value="Employee">Employee</option>
                                     <option value="Manager">Manager</option>
+                                    <option value="Owner">Owner</option>
+                                    <option value="Adviser">Adviser</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -185,37 +193,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
     <script>
-        let people = [
-            { 
-                id: '1', 
-                fullName: 'Rohanth R B', 
-                email: 'rohanthrb@example.com', 
-                phone: '9345696520', 
-                address: '123 Farm Road, Rural County', 
-                role: 'Owner',
-                notes: '' 
-            },
-            { 
-                id: '2', 
-                fullName: 'PichaiMuthu P', 
-                email: 'PichaiMuthu81@gmail.com', 
-                phone: '555-987-6543', 
-                address: '123 Farm Road,Vellianai,Karur', 
-                role: 'Adviser',
-                notes: 'Provides his unmatched knowlegde for the development of the  farm'
-            },
-            { 
-                id: '3', 
-                fullName: 'Raj Kumar', 
-                email: 'raj@example.com', 
-                phone: '555-456-7890', 
-                address: '789 Village Lane, Local District', 
-                role: 'Employee',
-                notes: 'Works with cattle, experienced in traditional methods' 
-            }
-        ];
+        let people = [];
         let editingId = null;
         let deleteId = null;
+
         function showNotification(message) {
             const alert = document.getElementById('notificationAlert');
             alert.textContent = message;
@@ -225,6 +206,7 @@
                 alert.style.display = 'none';
             }, 3000);
         }
+
         function renderTable(data = people) {
             const tableBody = document.getElementById('tableBody');
             tableBody.innerHTML = '';
@@ -240,9 +222,9 @@
                         <td>${person.phone}</td>
                         <td>${person.role}</td>
                         <td class="action-buttons">
-                            <button class="btn btn-sm btn-info view-btn" data-id="${person.id}">View</button>
-                            <button class="btn btn-sm btn-primary edit-btn" data-id="${person.id}">Edit</button>
-                            <button class="btn btn-sm btn-danger delete-btn" data-id="${person.id}" data-name="${person.fullName}">Delete</button>
+                            <button class="btn btn-sm btn-info view-btn" data-id="${person._id}">View</button>
+                            <button class="btn btn-sm btn-primary edit-btn" data-id="${person._id}">Edit</button>
+                            <button class="btn btn-sm btn-danger delete-btn" data-id="${person._id}" data-name="${person.fullName}">Delete</button>
                         </td>
                     `;
                     tableBody.appendChild(row);
@@ -259,6 +241,7 @@
                 btn.addEventListener('click', handleDelete);
             });
         }
+
         document.getElementById('personForm').addEventListener('submit', function(e) {
             e.preventDefault();   
             const personData = {
@@ -270,27 +253,22 @@
                 notes: document.getElementById('notes').value
             };
             if (editingId) {
-                const index = people.findIndex(p => p.id === editingId);
-                if (index !== -1) {
-                    personData.id = editingId;
-                    people[index] = personData;
-                    showNotification('Person updated successfully!');
-                }
+                // Update existing person via API
+                updatePerson(editingId, personData);
                 editingId = null;
             } else {
-                personData.id = Date.now().toString();
-                people.push(personData);
-                showNotification('Person added successfully!');
+                // Add new person via API
+                addPerson(personData);
             }
             document.getElementById('personForm').reset();
             document.getElementById('formTitle').textContent = 'Add New Person';
             document.getElementById('submitBtn').textContent = 'Add Person';
             document.getElementById('cancelBtn').style.display = 'none';
-            renderTable();
         });
+
         function handleView(e) {
             const personId = e.target.getAttribute('data-id');
-            const person = people.find(p => p.id === personId);
+            const person = people.find(p => p._id === personId);
             if (person) {
                 document.getElementById('detailName').textContent = person.fullName;
                 document.getElementById('detailEmail').textContent = person.email;
@@ -302,9 +280,10 @@
                 $('#viewDetailsModal').modal('show');
             }
         }
+
         function handleEdit(e) {
             const personId = e.target.getAttribute('data-id');
-            const person = people.find(p => p.id === personId);
+            const person = people.find(p => p._id === personId);
             if (person) {
                 editingId = personId;
                 document.getElementById('fullName').value = person.fullName;
@@ -319,6 +298,7 @@
                 document.querySelector('.card-custom-green').scrollIntoView({ behavior: 'smooth' });
             }
         }
+
         function handleDelete(e) {
             const personId = e.target.getAttribute('data-id');
             const personName = e.target.getAttribute('data-name');
@@ -326,15 +306,15 @@
             document.getElementById('deletePersonName').textContent = personName;
             $('#deleteModal').modal('show');
         }
+
         document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
             if (deleteId) {
-                people = people.filter(p => p.id !== deleteId);
-                renderTable();
+                deletePerson(deleteId);
                 $('#deleteModal').modal('hide');
-                showNotification('Person deleted successfully!');
                 deleteId = null;
             }
         });
+
         document.getElementById('cancelBtn').addEventListener('click', function() {
             document.getElementById('personForm').reset();
             document.getElementById('formTitle').textContent = 'Add New Person';
@@ -342,6 +322,7 @@
             document.getElementById('cancelBtn').style.display = 'none';
             editingId = null;
         });
+
         document.getElementById('searchBtn').addEventListener('click', function() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             
@@ -359,11 +340,13 @@
             
             renderTable(filteredData);
         });
+
         document.getElementById('searchInput').addEventListener('keyup', function(e) {
             if (e.key === 'Enter') {
                 document.getElementById('searchBtn').click();
             }
         });
+
         document.getElementById('exportBtn').addEventListener('click', function() {
             let csvContent = "data:text/csv;charset=utf-8,";
             csvContent += "Name,Email,Phone,Address,Role,Notes\n";
@@ -381,11 +364,7 @@
             
             showNotification('Data exported to CSV successfully!');
         });
-        document.addEventListener('DOMContentLoaded', function() {
-            renderTable();
-        });
-        
-/*
+
         async function fetchPeople() {
             try {
                 const response = await fetch('/api/people');
@@ -393,11 +372,36 @@
                 const data = await response.json();
                 people = data;
                 renderTable();
+                return data;
             } catch (error) {
                 console.error('Error fetching data:', error);
-                showNotification('Error loading data from server');
+                showNotification('Error loading data from server. Using local data instead.');
+                // Set some default data if API fails
+                people = [
+                    { 
+                        _id: '1', 
+                        fullName: 'Rohanth R B', 
+                        email: 'rohanthrb@example.com', 
+                        phone: '9345696520', 
+                        address: '123 Farm Road, Rural County', 
+                        role: 'Owner',
+                        notes: '' 
+                    },
+                    { 
+                        _id: '2', 
+                        fullName: 'PichaiMuthu P', 
+                        email: 'PichaiMuthu81@gmail.com', 
+                        phone: '555-987-6543', 
+                        address: '123 Farm Road,Vellianai,Karur', 
+                        role: 'Adviser',
+                        notes: 'Provides his unmatched knowlegde for the development of the farm'
+                    }
+                ];
+                renderTable();
+                throw error; // re-throw to be caught by caller
             }
         }
+
         async function addPerson(personData) {
             try {
                 const response = await fetch('/api/people', {
@@ -409,14 +413,13 @@
                 if (!response.ok) throw new Error('Failed to add person');
                 const data = await response.json();
                 showNotification('Person added successfully!');
-                fetchPeople(); // Refresh data
+                await fetchPeople(); // Refresh data
             } catch (error) {
                 console.error('Error adding person:', error);
                 showNotification('Error adding person to database');
             }
         }
         
-        // Function to update a person in MongoDB
         async function updatePerson(id, personData) {
             try {
                 const response = await fetch(`/api/people/${id}`, {
@@ -427,14 +430,13 @@
                 
                 if (!response.ok) throw new Error('Failed to update person');
                 showNotification('Person updated successfully!');
-                fetchPeople(); // Refresh data
+                await fetchPeople(); // Refresh data
             } catch (error) {
                 console.error('Error updating person:', error);
                 showNotification('Error updating person in database');
             }
         }
         
-        // Function to delete a person from MongoDB
         async function deletePerson(id) {
             try {
                 const response = await fetch(`/api/people/${id}`, {
@@ -443,13 +445,20 @@
                 
                 if (!response.ok) throw new Error('Failed to delete person');
                 showNotification('Person deleted successfully!');
-                fetchPeople(); // Refresh data
+                await fetchPeople(); // Refresh data
             } catch (error) {
                 console.error('Error deleting person:', error);
                 showNotification('Error deleting person from database');
             }
         }
-        */
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Try to fetch data from server first, fall back to local data if needed
+            fetchPeople().catch(() => {
+                console.warn('Using local data as fallback');
+                renderTable();
+            });
+        });
     </script>
 </body>
 </html>
