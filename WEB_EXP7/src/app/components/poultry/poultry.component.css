@@ -1,0 +1,50 @@
+.custom-header {
+    background-color: rgb(33, 196, 1);
+    background-image: url('/assets/header_bg2.png');
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    height: 300px;
+    padding: 10px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar-custom {
+    background-color: #333;
+}
+.navbar-custom .nav-link {
+    color: white !important;
+    padding: 14px 18px;
+}
+.navbar-custom .nav-link:hover {
+    background-color: #111;
+}
+.footer-custom {
+    background-color: rgb(255, 153, 0);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+}
+.card-custom {
+    border-radius: 12px;
+    border-width: 5px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.card-custom-light {
+    background-color: #F0FFF0;
+    color: #2F4F4F;
+}
+.title {
+    color: rgb(237, 196, 92);
+    font-size: 44px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.card-custom-green {
+    background-color: #77ea7b;
+    color: white;
+}

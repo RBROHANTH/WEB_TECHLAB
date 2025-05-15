@@ -1,0 +1,87 @@
+.container {
+    max-width: 600px;
+    margin: 32px auto;
+    padding: 32px 28px 28px 28px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 32px 0 rgba(60,72,88,0.12), 0 1.5px 6px 0 rgba(60,72,88,0.08);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 28px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+    color: #222;
+}
+
+input[type="text"],
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin-bottom: 2px;
+    transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.text-danger {
+    color: #e74c3c;
+    font-size: 0.95em;
+    margin-top: 4px;
+    display: block;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 24px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px 0 rgba(60,72,88,0.08);
+}
+
+button[type="submit"]:hover:not(:disabled) {
+    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+    color: #222;
+}
+
+button[type="submit"]:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    color: #fff;
+}
+
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+p {
+    margin-bottom: 18px;
+}
